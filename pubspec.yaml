@@ -1,7 +1,7 @@
 name: drink_n_talk
 description: A new Flutter project.
 
-publish_to: 'none'
+publish_to: "none"
 version: 1.0.0+1
 
 environment:
@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^0.22.0
+  modal_bottom_sheet: ^2.0.0
   shared_preferences: ^2.0.8
 
 dev_dependencies:

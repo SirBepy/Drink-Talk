@@ -58,7 +58,7 @@ final ThemeData kLightTheme = ThemeData(
       fontFamily: 'Baruta',
       color: Color(0xFF000000),
     ),
-    // Kreni s igrom and the timer
+    // ModalButton and the timer
     headline3: TextStyle(
       fontSize: 15,
       fontFamily: 'Baruta',

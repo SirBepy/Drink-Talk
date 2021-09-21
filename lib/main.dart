@@ -21,24 +21,60 @@ class MyApp extends StatelessWidget {
 }
 
 final ThemeData kLightTheme = ThemeData(
+  //? Color palette
   primaryColor: const Color(0xFF000000),
   scaffoldBackgroundColor: const Color(0xFFFFAC07),
+  splashColor: const Color(0x44FFAC07),
+  backgroundColor: const Color(0xFFFFFFFF),
+  brightness: Brightness.light,
+
+  //? Input theme
   inputDecorationTheme: InputDecorationTheme(
+    filled: true,
+    fillColor: Colors.white,
+    contentPadding: AppPadding.h32,
     hintStyle: const TextStyle(
       color: Color(0xFFADADAD),
       fontSize: 12,
       fontFamily: 'GothamRounded',
     ),
-    fillColor: Colors.white,
-    contentPadding: AppPadding.h32,
-    filled: true,
     border: OutlineInputBorder(
       borderSide: BorderSide.none,
       borderRadius: BorderRadius.circular(200),
     ),
   ),
-  brightness: Brightness.light,
+
+  //? Text theme
   textTheme: const TextTheme(
+    // All of the super big fonts, just the color is changed
+    headline1: TextStyle(
+      fontSize: 30,
+      fontFamily: 'Baruta',
+      color: Color(0xFFFFFFFF),
+    ),
+    // All of the second biggest fonts (theyre all black)
+    headline2: TextStyle(
+      fontSize: 19,
+      fontFamily: 'Baruta',
+      color: Color(0xFF000000),
+    ),
+    // Kreni s igrom and the timer
+    headline3: TextStyle(
+      fontSize: 15,
+      fontFamily: 'Baruta',
+      color: Color(0xFFFFFFFF),
+    ),
+    bodyText1: TextStyle(
+      fontSize: 16,
+      fontFamily: 'GothamRounded',
+      color: Color(0xFF000000),
+    ),
+    bodyText2: TextStyle(
+      fontSize: 16,
+      fontFamily: 'GothamRounded',
+      fontWeight: FontWeight.bold,
+      color: Color(0xFF000000),
+    ),
     button: TextStyle(
       fontSize: 20,
       fontFamily: 'Baruta',
@@ -47,29 +83,5 @@ final ThemeData kLightTheme = ThemeData(
   ),
 );
 
-final ThemeData kDarkTheme = ThemeData(
-  primaryColor: const Color(0xFF000000),
-  scaffoldBackgroundColor: const Color(0xFFFFAC07),
-  inputDecorationTheme: InputDecorationTheme(
-    hintStyle: const TextStyle(
-      color: Color(0xFFADADAD),
-      fontSize: 12,
-      fontFamily: 'GothamRounded',
-    ),
-    fillColor: Colors.white,
-    contentPadding: AppPadding.h32,
-    filled: true,
-    border: OutlineInputBorder(
-      borderSide: BorderSide.none,
-      borderRadius: BorderRadius.circular(200),
-    ),
-  ),
-  brightness: Brightness.light,
-  textTheme: const TextTheme(
-    button: TextStyle(
-      fontSize: 20,
-      fontFamily: 'Baruta',
-      color: Color(0xFFFFFFFF),
-    ),
-  ),
-);
+// TODO: Change dark theme
+final ThemeData kDarkTheme = ThemeData();

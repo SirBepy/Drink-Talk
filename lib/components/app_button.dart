@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppButton extends StatelessWidget {
   final String? text;
   final double size;
-  final Function onPressed;
+  final VoidCallback onPressed;
 
   const AppButton({
     Key? key,
@@ -17,6 +17,8 @@ class AppButton extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(200),
         child: Ink(
           height: size,
           width: size,

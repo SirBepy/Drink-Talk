@@ -44,6 +44,14 @@ final ThemeData kLightTheme = ThemeData(
     ),
   ),
 
+  //? Snackbar Theme
+  snackBarTheme: const SnackBarThemeData(
+    backgroundColor: Colors.black,
+    contentTextStyle: TextStyle(fontSize: 16, color: Colors.white),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+    behavior: SnackBarBehavior.floating,
+  ),
+
   //? Text theme
   textTheme: const TextTheme(
     // All of the super big fonts, just the color is changed

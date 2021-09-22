@@ -1,6 +1,8 @@
 import 'package:drink_n_talk/components/app_button.dart';
+import 'package:drink_n_talk/components/bottom_button.dart';
 import 'package:drink_n_talk/components/custom_app_bar.dart';
 import 'package:drink_n_talk/components/qr_code_scanner_modal.dart';
+import 'package:drink_n_talk/pages/setup_screen.dart';
 import 'package:drink_n_talk/utils/spacers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,7 +18,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool isOpen = false;
-  double verticalDrag = 0;
   String username = '';
 
   @override
@@ -27,14 +28,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> loadUsername() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    username = sharedPrefs.getString('username') ?? 'Korisnik';
+    setState(() => username = sharedPrefs.getString('username') ?? 'Korisnik');
   }
 
   void onCreate() {
-    // TODO: Add firebase logic
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => const SetupScreen()),
+    );
   }
 
   Future<void> showQRCodeReader() async {
+    //? Doing this to make sure the user cant open two QRCodeScannerModals at the same time
     if (isOpen) return;
     setState(() => isOpen = true);
     await showMaterialModalBottomSheet(
@@ -42,15 +46,6 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context) => QRCodeScannerModal(),
     );
     setState(() => isOpen = false);
-  }
-
-  void onVerticalDragUpdate(DragUpdateDetails details) {
-    verticalDrag += details.localPosition.dy;
-    if (verticalDrag < -500) {
-      showQRCodeReader();
-      verticalDrag = 0;
-    }
-    print(verticalDrag);
   }
 
   @override
@@ -88,24 +83,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          GestureDetector(
-            onTap: () => showQRCodeReader(),
-            onVerticalDragUpdate: onVerticalDragUpdate,
-            onVerticalDragEnd: (_) => verticalDrag = 0,
-            child: Container(
-              width: double.infinity,
-              height: 100,
-              decoration: BoxDecoration(
-                color: Theme.of(context).backgroundColor,
-                borderRadius: BorderRadius.circular(200),
-              ),
-              child: Center(
-                child: Text(
-                  'Prijavi se u postojeću igru',
-                  style: Theme.of(context).textTheme.headline3!.copyWith(color: Theme.of(context).primaryColor),
-                ),
-              ),
-            ),
+          BottomButton(
+            onPressed: showQRCodeReader,
+            text: 'Prijavi se u postojeću igru',
           )
         ],
       ),

@@ -21,7 +21,7 @@ class LoginScreen extends StatelessWidget {
       return;
     }
 
-    sharedPrefs.setString('username', value);
+    await sharedPrefs.setString('username', value);
     Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => const HomeScreen()),
     );

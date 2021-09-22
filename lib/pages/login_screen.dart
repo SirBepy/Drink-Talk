@@ -4,12 +4,24 @@ import 'package:drink_n_talk/utils/app_padding.dart';
 import 'package:drink_n_talk/utils/spacers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
+  final TextEditingController textEditingController = TextEditingController();
 
-  void onLogin(BuildContext context) {
-    // TODO: Add firebase logic
+  Future<void> onLogin(BuildContext context) async {
+    ScaffoldMessenger.of(context).clearSnackBars();
+
+    final sharedPrefs = await SharedPreferences.getInstance();
+    final String value = textEditingController.text;
+
+    if (value.replaceAll(' ', '').isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Nadimak nesmije bit prazan')));
+      return;
+    }
+
+    sharedPrefs.setString('username', value);
     Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => const HomeScreen()),
     );
@@ -32,10 +44,11 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
             Spacers.h32,
-            const Padding(
+            Padding(
               padding: AppPadding.h32,
               child: TextField(
-                decoration: InputDecoration(
+                controller: textEditingController,
+                decoration: const InputDecoration(
                   hintText: 'Daj nadimak ili ime',
                 ),
               ),

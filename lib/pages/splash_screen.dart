@@ -7,7 +7,7 @@ class SplashScreen extends StatelessWidget {
 
   void redirect(BuildContext context) {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
+      MaterialPageRoute(builder: (context) => LoginScreen()),
     );
   }
 

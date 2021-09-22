@@ -5,6 +5,7 @@ import 'package:drink_n_talk/utils/spacers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -16,6 +17,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool isOpen = false;
   double verticalDrag = 0;
+  String username = '';
+
+  @override
+  void initState() {
+    super.initState();
+    loadUsername();
+  }
+
+  Future<void> loadUsername() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    username = sharedPrefs.getString('username') ?? 'Korisnik';
+  }
 
   void onCreate() {
     // TODO: Add firebase logic
@@ -63,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Spacers.h8,
                 Text('Hellou', style: Theme.of(context).textTheme.headline1),
                 Text(
-                  'Predrag',
+                  '$username',
                   style: Theme.of(context).textTheme.headline1!.copyWith(color: Theme.of(context).primaryColor),
                 ),
                 Spacers.h64,

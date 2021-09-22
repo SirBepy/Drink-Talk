@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>158325874135-q39e0lvemr0d48k3o5dndonroduj37p6.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.158325874135-q39e0lvemr0d48k3o5dndonroduj37p6</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBpCPZ88pPYOmskTia8-T5eUHzbQV0mwoI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>158325874135</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.hackathon.</string>
+	<key>PROJECT_ID</key>
+	<string>drink-n-talk</string>
+	<key>STORAGE_BUCKET</key>
+	<string>drink-n-talk.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:158325874135:ios:346f1c23725ee16ab8bf92</string>
+</dict>
+</plist>

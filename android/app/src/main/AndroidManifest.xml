@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.drink_n_talk">
+    package="com.hackathon.drinkNTalk">
    <application
         android:label="drink_n_talk"
         android:icon="@mipmap/ic_launcher">

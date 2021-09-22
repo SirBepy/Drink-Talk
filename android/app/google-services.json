@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "158325874135",
+    "project_id": "drink-n-talk",
+    "storage_bucket": "drink-n-talk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:158325874135:android:e2c9671c715f9ea3b8bf92",
+        "android_client_info": {
+          "package_name": "com.hackathon.drinkNTalk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "158325874135-h3ebl1lt8p132kfjtg04d0s2o6akll8q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwtLS2BfjWxEWvTW2zqQOHdBaAMrf98Y4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "158325874135-h3ebl1lt8p132kfjtg04d0s2o6akll8q.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "158325874135-001i29ied5sjrcve5jr0fu7pl9rbvmke.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.drinkNTalk"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

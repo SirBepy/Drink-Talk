@@ -1,4 +1,4 @@
-package com.example.drink_n_talk
+package com.hackathon.drinkNTalk
 
 import io.flutter.embedding.android.FlutterActivity
 

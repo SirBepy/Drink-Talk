@@ -34,10 +34,25 @@ class _QRCodeScannerModalState extends State<QRCodeScannerModal> {
     controller!.resumeCamera();
   }
 
+  void onQRViewCreated(QRViewController controller) {
+    setState(() => this.controller = controller);
+    controller.scannedDataStream.listen((Barcode scanData) {
+      controller.dispose();
+      Navigator.of(widget.context).pop(scanData.code);
+    });
+  }
+
+  void onPermissionSet(BuildContext context, QRViewController ctrl, bool hasPermissions) {
+    if (!hasPermissions) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Nije moguće koristiti QR Scanner bez kamere')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final scanArea =
-        (MediaQuery.of(context).size.width < 400 || MediaQuery.of(context).size.height < 400) ? 150.0 : 300.0;
+    final scanArea = MediaQuery.of(context).size.width - 100;
 
     return Scaffold(
       body: GestureDetector(
@@ -53,10 +68,9 @@ class _QRCodeScannerModalState extends State<QRCodeScannerModal> {
               onQRViewCreated: onQRViewCreated,
               onPermissionSet: (ctrl, p) => onPermissionSet(context, ctrl, p),
               overlay: QrScannerOverlayShape(
-                borderColor: Colors.red,
-                borderRadius: 10,
-                borderLength: 30,
-                borderWidth: 10,
+                borderColor: Theme.of(context).scaffoldBackgroundColor,
+                borderLength: 20,
+                borderWidth: 8,
                 cutOutSize: scanArea,
               ),
             ),
@@ -71,21 +85,5 @@ class _QRCodeScannerModalState extends State<QRCodeScannerModal> {
         ),
       ),
     );
-  }
-
-  void onQRViewCreated(QRViewController controller) {
-    setState(() => this.controller = controller);
-    controller.scannedDataStream.listen((Barcode scanData) {
-      controller.dispose();
-      Navigator.of(widget.context).pop(scanData.code);
-    });
-  }
-
-  void onPermissionSet(BuildContext context, QRViewController ctrl, bool hasPermissions) {
-    if (!hasPermissions) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Nije moguće koristiti QR Scanner bez kamere')),
-      );
-    }
   }
 }

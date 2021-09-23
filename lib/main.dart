@@ -31,6 +31,7 @@ final ThemeData kLightTheme = ThemeData(
   backgroundColor: const Color(0xFFFFFFFF),
   brightness: Brightness.light,
 
+  dividerColor: const Color(0xFF979797),
   //? Input theme
   inputDecorationTheme: InputDecorationTheme(
     filled: true,

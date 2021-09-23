@@ -2,7 +2,10 @@ import 'package:drink_n_talk/components/app_button.dart';
 import 'package:drink_n_talk/components/bottom_button.dart';
 import 'package:drink_n_talk/components/custom_app_bar.dart';
 import 'package:drink_n_talk/components/qr_code_scanner_modal.dart';
+import 'package:drink_n_talk/models/room.dart';
+import 'package:drink_n_talk/pages/countdown_screen.dart';
 import 'package:drink_n_talk/pages/setup_screen.dart';
+import 'package:drink_n_talk/services/room_service.dart';
 import 'package:drink_n_talk/utils/spacers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -41,11 +44,32 @@ class _HomeScreenState extends State<HomeScreen> {
     //? Doing this to make sure the user cant open two QRCodeScannerModals at the same time
     if (isOpen) return;
     setState(() => isOpen = true);
-    await showMaterialModalBottomSheet(
+    final response = await showMaterialModalBottomSheet(
       context: context,
-      builder: (context) => QRCodeScannerModal(),
+      builder: (context) => QRCodeScannerModal(context: context),
     );
+    if (response != null) {
+      handleQRCodeResponse(response);
+    }
     setState(() => isOpen = false);
+  }
+
+  Future<void> handleQRCodeResponse(dynamic response) async {
+    if (response is! String || response.isEmpty) {
+      return showErrorToast('QR Kod je neispravan');
+    }
+    final Room? room = await RoomService.getRoom(response);
+    if (room == null) {
+      return showErrorToast('Ova Drink&Talk soba ne postoji');
+    }
+
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => const CountdownScreen()),
+    );
+  }
+
+  void showErrorToast(String text) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
   }
 
   @override

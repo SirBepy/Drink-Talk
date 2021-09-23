@@ -18,6 +18,7 @@ class SetupScreen extends StatefulWidget {
 
 class _SetupScreenState extends State<SetupScreen> {
   Room? room;
+  bool? hadRoom;
 
   @override
   void initState() {
@@ -26,8 +27,8 @@ class _SetupScreenState extends State<SetupScreen> {
   }
 
   Future<void> createRoom() async {
-      room = await RoomService.createRoom();
-      setState(() {});
+    room = await RoomService.createRoom();
+    setState(() {});
   }
 
   @override
@@ -72,6 +73,12 @@ class _SetupScreenState extends State<SetupScreen> {
     );
   }
 
+  Future<void> handleNoMoreRoom() async {
+    hadRoom = false;
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Ova soba više ne postoji')));
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,11 +87,13 @@ class _SetupScreenState extends State<SetupScreen> {
       body: room == null
           ? const LoadingIndicator()
           : StreamBuilder(
-              stream: RoomService.getRoomStream(room!.id),
+              stream: RoomService.getRoomStream(),
               builder: (BuildContext context, AsyncSnapshot<Room> snapshot) {
                 if (!snapshot.hasData) {
+                  if (hadRoom == true) Future.delayed(const Duration(seconds: 1), handleNoMoreRoom);
                   return const LoadingIndicator();
                 }
+                hadRoom ??= true;
 
                 return Column(
                   children: [

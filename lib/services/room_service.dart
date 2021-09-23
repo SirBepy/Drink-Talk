@@ -12,8 +12,8 @@ class RoomService {
   static void init() => collection = FirebaseFirestore.instance.collection('rooms');
 
   //* Getters
-  static Stream<Room> getRoomStream(String id) {
-    return collection.doc(id).snapshots().map(
+  static Stream<Room> getRoomStream() {
+    return collection.doc(room!.id).snapshots().map(
           (DocumentSnapshot snapshot) => Room.fromMap(
             snapshot.data() as Map<String, dynamic>,
           ),
@@ -63,13 +63,15 @@ class RoomService {
 
   //* Functions that should be replaced
   // Ideally, this function will later be deleted and we would use a CRON function to delete older entries
+  //? Problem: In case user opens a room but forces the app to shutdown, there will be some rooms left open
+  //* Solution: Delete all data older than 16 hours
   static void deleteOldData() {
-    final timestamp30MinsAgo = Timestamp.fromMillisecondsSinceEpoch(
-      DateTime.now().subtract(const Duration(minutes: 30)).millisecondsSinceEpoch,
+    final timestamp16hrAgo = Timestamp.fromMillisecondsSinceEpoch(
+      DateTime.now().subtract(const Duration(hours: 16)).millisecondsSinceEpoch,
     );
 
-    collection.where('timestamp', isLessThan: timestamp30MinsAgo).get().then((QuerySnapshot snapshot) {
-      for (final DocumentSnapshot ds in snapshot.docs) ds.reference.delete();
+    collection.where('timestamp', isLessThan: timestamp16hrAgo).get().then((QuerySnapshot snapshot) {
+      for (final DocumentSnapshot snapshot in snapshot.docs) snapshot.reference.delete();
     });
   }
 }

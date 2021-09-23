@@ -17,8 +17,8 @@ class SetupScreen extends StatefulWidget {
 }
 
 class _SetupScreenState extends State<SetupScreen> {
-  Room? room;
   bool? hadRoom;
+  Future<bool>? createRoomFuture;
 
   @override
   void initState() {
@@ -27,7 +27,7 @@ class _SetupScreenState extends State<SetupScreen> {
   }
 
   Future<void> createRoom() async {
-    room = await RoomService.createRoom();
+    createRoomFuture = RoomService.createRoom();
     setState(() {});
   }
 
@@ -84,69 +84,73 @@ class _SetupScreenState extends State<SetupScreen> {
     return Scaffold(
       appBar: const CustomAppBar(),
       extendBodyBehindAppBar: true,
-      body: room == null
-          ? const LoadingIndicator()
-          : StreamBuilder(
-              stream: RoomService.getRoomStream(),
-              builder: (BuildContext context, AsyncSnapshot<Room> snapshot) {
-                if (!snapshot.hasData) {
-                  if (hadRoom == true) Future.delayed(const Duration(seconds: 1), handleNoMoreRoom);
-                  return const LoadingIndicator();
-                }
-                hadRoom ??= true;
+      body: FutureBuilder<bool>(
+        future: createRoomFuture,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return const LoadingIndicator();
+          return StreamBuilder(
+            stream: RoomService.getRoomStream(),
+            builder: (BuildContext context, AsyncSnapshot<Room> snapshot) {
+              if (!snapshot.hasData) {
+                if (hadRoom == true) Future.delayed(const Duration(seconds: 1), handleNoMoreRoom);
+                return const LoadingIndicator();
+              }
+              hadRoom ??= true;
 
-                return Column(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 200,
-                            width: 200,
-                            padding: AppPadding.a24,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(24),
-                              boxShadow: [
-                                BoxShadow(
-                                    offset: const Offset(0, 10),
-                                    blurRadius: 18,
-                                    spreadRadius: -8,
-                                    color: Theme.of(context).primaryColor.withOpacity(.2))
-                              ],
-                            ),
-                            child: QrImage(
-                              data: room!.id,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).backgroundColor,
-                        borderRadius:
-                            const BorderRadius.only(topLeft: Radius.circular(50), topRight: Radius.circular(50)),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          createPlayersList(snapshot.data!.players),
-                          Material(
-                            child: BottomButton(
-                              onPressed: () {},
-                              isDark: true,
-                              text: 'Kreni s igrom',
-                            ),
+              return Column(
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 200,
+                          width: 200,
+                          padding: AppPadding.a24,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(24),
+                            boxShadow: [
+                              BoxShadow(
+                                  offset: const Offset(0, 10),
+                                  blurRadius: 18,
+                                  spreadRadius: -8,
+                                  color: Theme.of(context).primaryColor.withOpacity(.2))
+                            ],
                           ),
-                        ],
-                      ),
-                    )
-                  ],
-                );
-              },
-            ),
+                          child: QrImage(
+                            data: snapshot.data!.id,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).backgroundColor,
+                      borderRadius:
+                          const BorderRadius.only(topLeft: Radius.circular(50), topRight: Radius.circular(50)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        createPlayersList(snapshot.data!.players),
+                        Material(
+                          child: BottomButton(
+                            onPressed: () {},
+                            isDark: true,
+                            text: 'Kreni s igrom',
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

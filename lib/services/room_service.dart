@@ -14,10 +14,12 @@ class RoomService {
   //* Getters
   static Stream<Room> getRoomStream() {
     return collection.doc(room!.id).snapshots().map(
-          (DocumentSnapshot snapshot) => Room.fromMap(
-            snapshot.data() as Map<String, dynamic>,
-          ),
-        );
+      (DocumentSnapshot snapshot) {
+        return Room.fromMap(
+          snapshot.data() as Map<String, dynamic>,
+        )..id = room!.id;
+      },
+    );
   }
 
   static Future<Room?> getRoom(String id) async {
@@ -30,22 +32,24 @@ class RoomService {
   }
 
   //* Data Handlers
-  static Future<Room> createRoom() async {
+  static Future<bool> createRoom() async {
     final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
     room = Room(players: [sharedPrefs.getString('username') ?? 'Host']);
 
     // TODO: Handle crashes
     final DocumentReference docRef = await collection.add({...room!.toMap(), 'timestamp': Timestamp.now()});
     room!.id = docRef.id;
-    return room!;
+    return true;
   }
 
   static Future<void> deleteRoom() async {
+    if (await roomDoesntExist()) return;
     final DocumentSnapshot snapshot = await collection.doc(room!.id).get();
     snapshot.reference.delete();
   }
 
   static Future<void> leaveRoom() async {
+    if (await roomDoesntExist()) return;
     final sharedPrefs = await SharedPreferences.getInstance();
     collection.doc(room!.id).update({
       'players': FieldValue.arrayRemove([sharedPrefs.getString('username')!])
@@ -53,6 +57,7 @@ class RoomService {
   }
 
   static Future<void> joinRoom() async {
+    if (await roomDoesntExist()) return;
     final sharedPrefs = await SharedPreferences.getInstance();
     collection.doc(room!.id).update({
       'players': FieldValue.arrayUnion([sharedPrefs.getString('username')!])
@@ -60,6 +65,15 @@ class RoomService {
   }
 
   static Future<void> updateUserTimestamp() async {}
+
+  //* Helper Functions
+  static Future<bool> roomDoesntExist() async {
+    if (room == null) return true;
+    final bool exists = (await collection.doc(room!.id).get()).exists;
+    if (!exists) room = null;
+
+    return !exists;
+  }
 
   //* Functions that should be replaced
   // Ideally, this function will later be deleted and we would use a CRON function to delete older entries

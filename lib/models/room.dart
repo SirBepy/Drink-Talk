@@ -7,10 +7,10 @@ class Room {
   String id;
 
   Room({
-    required this.hasStarted,
-    required this.time,
-    required this.players,
-    required this.id,
+    this.hasStarted = false,
+    this.time = '0:30',
+    this.players = const [],
+    this.id = '',
   });
 
   Map<String, dynamic> toMap() {
@@ -18,16 +18,16 @@ class Room {
       'hasStarted': hasStarted,
       'time': time,
       'players': players,
-      'id': id,
     };
   }
 
   factory Room.fromMap(Map<String, dynamic> map) {
+    final List<dynamic> players = map['players'] as List<dynamic>;
+
     return Room(
       hasStarted: map['hasStarted'] as bool,
       time: map['time'] as String,
-      players: List<String>.from(map['players'] as List<String>),
-      id: map['id'] as String,
+      players: players.map((e) => e.toString()).toList(),
     );
   }
 

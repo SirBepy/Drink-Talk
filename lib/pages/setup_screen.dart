@@ -17,14 +17,13 @@ class SetupScreen extends StatefulWidget {
 }
 
 class _SetupScreenState extends State<SetupScreen> {
-  final RoomService roomService = RoomService();
   Room? room;
 
   @override
   void initState() {
     super.initState();
     () async {
-      room = await roomService.createRoom();
+      room = await RoomService.createRoom();
       setState(() {});
     }();
   }
@@ -73,7 +72,7 @@ class _SetupScreenState extends State<SetupScreen> {
       body: room == null
           ? const LoadingIndicator()
           : StreamBuilder(
-              stream: roomService.joinRoom(room!.id),
+              stream: RoomService.getRoomStream(room!.id),
               builder: (BuildContext context, AsyncSnapshot<Room> snapshot) {
                 if (!snapshot.hasData) {
                   return const LoadingIndicator();
@@ -101,7 +100,7 @@ class _SetupScreenState extends State<SetupScreen> {
                               ],
                             ),
                             child: QrImage(
-                              data: snapshot.data!.id,
+                              data: room!.id,
                             ),
                           )
                         ],
@@ -116,7 +115,7 @@ class _SetupScreenState extends State<SetupScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          createPlayersList(room!.players),
+                          createPlayersList(snapshot.data!.players),
                           Material(
                             child: BottomButton(
                               onPressed: () {},

@@ -22,10 +22,18 @@ class _SetupScreenState extends State<SetupScreen> {
   @override
   void initState() {
     super.initState();
-    () async {
+    createRoom();
+  }
+
+  Future<void> createRoom() async {
       room = await RoomService.createRoom();
       setState(() {});
-    }();
+  }
+
+  @override
+  void dispose() {
+    RoomService.deleteRoom();
+    super.dispose();
   }
 
   Widget createPlayerListItem(String player, int index) {

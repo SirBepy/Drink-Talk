@@ -40,6 +40,11 @@ class RoomService {
     return room!;
   }
 
+  static Future<void> deleteRoom() async {
+    final DocumentSnapshot snapshot = await collection.doc(room!.id).get();
+    snapshot.reference.delete();
+  }
+
   static Future<void> leaveRoom() async {
     final sharedPrefs = await SharedPreferences.getInstance();
     collection.doc(room!.id).update({

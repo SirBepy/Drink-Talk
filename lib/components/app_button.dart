@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppButton extends StatelessWidget {
   final String? text;
+  final Icon? icon;
   final double size;
   final VoidCallback onPressed;
 
@@ -10,6 +11,7 @@ class AppButton extends StatelessWidget {
     this.text,
     this.size = 80,
     required this.onPressed,
+    this.icon,
   }) : super(key: key);
 
   @override
@@ -27,7 +29,7 @@ class AppButton extends StatelessWidget {
             shape: BoxShape.circle,
           ),
           child: Center(
-            child: Text(text ?? '', style: Theme.of(context).textTheme.button),
+            child: icon ?? Text(text ?? '', style: Theme.of(context).textTheme.button),
           ),
         ),
       ),

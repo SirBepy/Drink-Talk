@@ -16,10 +16,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final LocaleService _localeService = Provider.of<LocaleService>(context);
+    
     return MaterialApp(
       title: 'Drink & Talk',
       theme: kLightTheme,
       darkTheme: kLightTheme,
+      locale: _localeService.locale ?? Locale(locale),
+      supportedLocales: L10n.all,
+      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+            ],
       home: const SplashScreen(),
     );
   }

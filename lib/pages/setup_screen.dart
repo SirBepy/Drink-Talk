@@ -4,6 +4,7 @@ import 'package:drink_n_talk/components/custom_app_bar.dart';
 import 'package:drink_n_talk/components/dotted_divider.dart';
 import 'package:drink_n_talk/components/loading_indicator.dart';
 import 'package:drink_n_talk/models/room.dart';
+import 'package:drink_n_talk/pages/countdown_screen.dart';
 import 'package:drink_n_talk/services/room_service.dart';
 import 'package:drink_n_talk/utils/app_padding.dart';
 import 'package:drink_n_talk/utils/spacers.dart';
@@ -20,6 +21,7 @@ class SetupScreen extends StatefulWidget {
 class _SetupScreenState extends State<SetupScreen> {
   bool? hadRoom;
   Future<bool>? createRoomFuture;
+  bool deleteRoom = true;
 
   @override
   void initState() {
@@ -34,7 +36,7 @@ class _SetupScreenState extends State<SetupScreen> {
 
   @override
   void dispose() {
-    RoomService.deleteRoom();
+    if (deleteRoom) RoomService.deleteRoom();
     super.dispose();
   }
 
@@ -42,6 +44,14 @@ class _SetupScreenState extends State<SetupScreen> {
     hadRoom = false;
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Ova soba više ne postoji')));
     Navigator.of(context).pop();
+  }
+
+  Future<void> onStart() async {
+    deleteRoom = false;
+    Future.delayed(const Duration(seconds: 1), RoomService.startGame);
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => const CountdownScreen(alreadyJoined: true)),
+    );
   }
 
   @override
@@ -62,6 +72,7 @@ class _SetupScreenState extends State<SetupScreen> {
 
               return _CustomBottomModalSheet(
                 players: snapshot.data!.players,
+                onStart: onStart,
                 child: Scaffold(
                   appBar: const CustomAppBar(),
                   extendBodyBehindAppBar: true,
@@ -103,11 +114,13 @@ class _SetupScreenState extends State<SetupScreen> {
   }
 }
 
+//? The following class is mostly just animations and showing the players
 class _CustomBottomModalSheet extends StatefulWidget {
   final Widget child;
   final List<String> players;
+  final VoidCallback onStart;
 
-  const _CustomBottomModalSheet({Key? key, required this.child, required this.players}) : super(key: key);
+  const _CustomBottomModalSheet({required this.child, required this.players, required this.onStart});
 
   @override
   _CustomBottomModalSheetState createState() => _CustomBottomModalSheetState();
@@ -235,7 +248,7 @@ class _CustomBottomModalSheetState extends State<_CustomBottomModalSheet> {
             width: MediaQuery.of(context).size.width,
             child: Material(
               child: BottomButton(
-                onPressed: () {},
+                onPressed: widget.onStart,
                 isDark: true,
                 text: 'Kreni s igrom',
               ),

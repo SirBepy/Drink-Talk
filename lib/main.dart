@@ -76,17 +76,23 @@ final ThemeData kLightTheme = ThemeData(
     headline3: TextStyle(
       fontSize: 15,
       fontFamily: 'Baruta',
-      color: Color(0xFFFFFFFF),
+      color: Color(0xFF000000),
+    ),
+    headline4: TextStyle(
+      fontSize: 100,
+      fontFamily: 'Baruta',
+      color: Color(0xFF000000),
     ),
     bodyText1: TextStyle(
       fontSize: 16,
       fontFamily: 'GothamRounded',
+      fontWeight: FontWeight.w100,
       color: Color(0xFF000000),
     ),
     bodyText2: TextStyle(
       fontSize: 16,
       fontFamily: 'GothamRounded',
-      fontWeight: FontWeight.bold,
+      fontWeight: FontWeight.w900,
       color: Color(0xFF000000),
     ),
     button: TextStyle(

@@ -1,8 +1,12 @@
+import 'package:drink_n_talk/l10n/l10n.dart';
 import 'package:drink_n_talk/pages/splash_screen.dart';
+import 'package:drink_n_talk/services/locale_service.dart';
 import 'package:drink_n_talk/services/room_service.dart';
 import 'package:drink_n_talk/utils/app_padding.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screen_wake/flutter_screen_wake.dart';
 
 Future<void> main() async {
@@ -19,16 +23,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LocaleService _localeService = Provider.of<LocaleService>(context);
+    final LocaleService _localeService = LocaleService();
     
     return MaterialApp(
       title: 'Drink & Talk',
       theme: kLightTheme,
       darkTheme: kLightTheme,
-      locale: _localeService.locale ?? Locale(locale),
+      locale: _localeService.locale,
       supportedLocales: L10n.all,
       localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-              AppLocalizations.delegate,
+        AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,

@@ -1,0 +1,21 @@
+{
+  "@@locale": "en",
+
+  "hello" : "Hellou",
+  "createGame": "Create Game",
+  "joinExistingGame": "Register to an existing game",
+  "nameExists": "This name exists in this room, new name is: ",
+  "leavePhone": "Leave and don't touch phone for",
+  "seconds": "Seconds",
+  "waitingForHost": "Waiting for host to start the game.\n\n",
+  "instructionsFirst": "If you lift up your phone in the next ",
+  "instructionsSecond": " other participants will be notified that you have lost.\n\n",
+  "beFair": "Be fair and buy the drinks if you lose.",
+  "greatTeamQuote": "You are a real team\nthat can forget\ntechnology for a moment.",
+  "newGame": "New game?",
+  "provideUsername": "Give your nickname or name",
+  "signUp": "Sign up",
+  "nicknameEmpty": "Nickname can't be empty",
+  "roomDoesntExist": "This room doesn't exist"
+
+}

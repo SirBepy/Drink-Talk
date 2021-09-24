@@ -4,6 +4,7 @@ import 'package:drink_n_talk/utils/app_padding.dart';
 import 'package:drink_n_talk/utils/spacers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screen_wake/flutter_screen_wake.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -81,7 +82,7 @@ class _DoneScreenState extends State<DoneScreen> {
                         ),
                         Spacers.h16,
                         Text(
-                          'Vi ste prava ekipa\nkoja može zaboraviti\ntehnologiju na tren.',
+                          AppLocalizations.of(context)?.greatTeamQuote ??'Vi ste prava ekipa\nkoja može zaboraviti\ntehnologiju na tren.',
                           style: Theme.of(context).textTheme.headline2!,
                           textAlign: TextAlign.center,
                         ),
@@ -131,7 +132,7 @@ class _DoneScreenState extends State<DoneScreen> {
           Align(
             alignment: Alignment.bottomCenter,
             child: BottomButton(
-              text: 'Nova igra?',
+              text: AppLocalizations.of(context)?.newGame??'Nova igra?',
               onPressed: Navigator.of(context).pop,
             ),
           ),

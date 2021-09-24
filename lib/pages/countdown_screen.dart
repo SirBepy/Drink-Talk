@@ -8,6 +8,7 @@ import 'package:drink_n_talk/services/room_service.dart';
 import 'package:drink_n_talk/utils/spacers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screen_wake/flutter_screen_wake.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum CountdownState { waiting, started, finished }
 
@@ -48,7 +49,7 @@ class _CountdownScreenState extends State<CountdownScreen> with WidgetsBindingOb
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          'Ovo ime već postoji u ovoj sobi, novo ime je: $newName',
+          '${AppLocalizations.of(context)?.nameExists} $newName',
         ),
       ),
     );
@@ -157,7 +158,7 @@ class _CountdownScreenState extends State<CountdownScreen> with WidgetsBindingOb
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Spusti i ne diraj\nmobitel za',
+                      AppLocalizations.of(context)?.leavePhone ?? 'Spusti i ne diraj\nmobitel za',
                       style: Theme.of(context).textTheme.headline3,
                       textAlign: TextAlign.center,
                     ),
@@ -186,7 +187,7 @@ class _CountdownScreenState extends State<CountdownScreen> with WidgetsBindingOb
                     ),
                     Spacers.h16,
                     Text(
-                      'Sekundi',
+                      AppLocalizations.of(context)?.seconds ?? 'Sekundi',
                       style: Theme.of(context).textTheme.headline3,
                     ),
                   ],
@@ -209,21 +210,21 @@ class _CountdownScreenState extends State<CountdownScreen> with WidgetsBindingOb
                         children: [
                           if (countdownState == CountdownState.waiting)
                             TextSpan(
-                              text: 'Čekamo host-a da započne igru.\n\n',
+                              text: AppLocalizations.of(context)?.waitingForHost ?? 'Čekamo host-a da započne igru.\n\n',
                               style: Theme.of(context).textTheme.bodyText2,
                             ),
-                          const TextSpan(
-                            text: 'Ukoliko podigneš mobitel u sljedećih ',
+                           TextSpan(
+                            text: AppLocalizations.of(context)?.instructionsFirst ??'Ukoliko podigneš mobitel u sljedećih ',
                           ),
                           TextSpan(
                             text: getTime(snapshot.data!),
                             style: Theme.of(context).textTheme.bodyText2,
                           ),
-                          const TextSpan(
-                            text: ' ostalim sudionicima igre doći će notifikacija da si izgubio.\n\n',
+                           TextSpan(
+                            text: AppLocalizations.of(context)?.instructionsSecond ?? ' ostalim sudionicima igre doći će notifikacija da si izgubio.\n\n',
                           ),
                           TextSpan(
-                            text: 'Budi fer i plati piće ako gubiš.',
+                            text: AppLocalizations.of(context)?.beFair ?? 'Budi fer i plati piće ako gubiš.',
                             style: Theme.of(context).textTheme.bodyText2,
                           ),
                         ],

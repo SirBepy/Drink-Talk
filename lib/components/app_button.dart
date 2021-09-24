@@ -8,7 +8,7 @@ class AppButton extends StatelessWidget {
 
   const AppButton({
     Key? key,
-    this.text,
+    this.text = '',
     this.size = 80,
     required this.onPressed,
     this.icon,

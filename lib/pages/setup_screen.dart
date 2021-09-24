@@ -9,6 +9,7 @@ import 'package:drink_n_talk/services/room_service.dart';
 import 'package:drink_n_talk/utils/app_padding.dart';
 import 'package:drink_n_talk/utils/spacers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class SetupScreen extends StatefulWidget {
@@ -42,7 +43,7 @@ class _SetupScreenState extends State<SetupScreen> {
 
   Future<void> handleNoMoreRoom() async {
     hadRoom = false;
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Ova soba više ne postoji')));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)?.roomDoesntExist ?? 'Ova soba više ne postoji')));
     Navigator.of(context).pop();
   }
 

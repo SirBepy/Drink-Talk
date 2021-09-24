@@ -3,6 +3,7 @@ import 'package:drink_n_talk/pages/home_screen.dart';
 import 'package:drink_n_talk/utils/app_padding.dart';
 import 'package:drink_n_talk/utils/spacers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,7 +18,7 @@ class LoginScreen extends StatelessWidget {
     final String value = textEditingController.text;
 
     if (value.replaceAll(' ', '').isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Nadimak nesmije bit prazan')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)?.nicknameEmpty ??'Nadimak nesmije bit prazan')));
       return;
     }
 
@@ -48,14 +49,14 @@ class LoginScreen extends StatelessWidget {
               padding: AppPadding.h32,
               child: TextField(
                 controller: textEditingController,
-                decoration: const InputDecoration(
-                  hintText: 'Daj nadimak ili ime',
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context)?.provideUsername ?? 'Daj nadimak ili ime',
                 ),
               ),
             ),
             Spacers.h32,
             AppButton(
-              text: 'Prijavi se',
+              text: AppLocalizations.of(context)?.signUp ?? 'Prijavi se',
               size: 140,
               onPressed: () => onLogin(context),
             ),

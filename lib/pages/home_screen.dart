@@ -8,6 +8,7 @@ import 'package:drink_n_talk/pages/setup_screen.dart';
 import 'package:drink_n_talk/services/room_service.dart';
 import 'package:drink_n_talk/utils/spacers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -94,14 +95,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Spacers.h32,
                 Spacers.h8,
-                Text('Hellou', style: Theme.of(context).textTheme.headline1),
+                Text(AppLocalizations.of(context)?.hello ?? 'Hellou', style: Theme.of(context).textTheme.headline1),
                 Text(
                   '$username',
                   style: Theme.of(context).textTheme.headline1!.copyWith(color: Theme.of(context).primaryColor),
                 ),
                 Spacers.h64,
                 AppButton(
-                  text: 'Kreiraj Igru',
+                  text:  AppLocalizations.of(context)?.createGame ?? 'Kreiraj Igru',
                   size: 180,
                   onPressed: onCreate,
                 ),
@@ -110,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomButton(
             onPressed: showQRCodeReader,
-            text: 'Prijavi se u postojeću igru',
+            text: AppLocalizations.of(context)?.joinExistingGame ?? 'Prijavi se u postojeću igru',
           )
         ],
       ),

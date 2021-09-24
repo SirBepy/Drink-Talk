@@ -8,7 +8,7 @@ class Room {
 
   Room({
     this.hasStarted = false,
-    this.time = '0:30',
+    this.time = '0h 30min',
     this.players = const [],
     this.id = '',
   });

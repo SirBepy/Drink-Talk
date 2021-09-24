@@ -32,6 +32,12 @@ final ThemeData kLightTheme = ThemeData(
   splashColor: const Color(0x44FFAC07),
   backgroundColor: const Color(0xFFFFFFFF),
   brightness: Brightness.light,
+  buttonTheme: const ButtonThemeData(
+    colorScheme: ColorScheme.light(
+      primary: Color(0xFFFFAC07),
+      secondary: Color(0xFFFFAC07),
+    ),
+  ),
 
   dividerColor: const Color(0xFF979797),
   //? Input theme
@@ -60,7 +66,7 @@ final ThemeData kLightTheme = ThemeData(
 
   //? Text theme
   textTheme: const TextTheme(
-    // All of the super big fonts, just the color is changed
+    // All of the super big fonts, just the color is change
     headline1: TextStyle(
       fontSize: 30,
       fontFamily: 'Baruta',
@@ -78,10 +84,17 @@ final ThemeData kLightTheme = ThemeData(
       fontFamily: 'Baruta',
       color: Color(0xFF000000),
     ),
+    // Only used for the countdown
     headline4: TextStyle(
       fontSize: 100,
       fontFamily: 'Baruta',
       color: Color(0xFF000000),
+    ),
+    // Only used for the dropdown
+    headline5: TextStyle(
+      fontSize: 23,
+      fontFamily: 'Baruta',
+      color: Color(0xFFFFFFFF),
     ),
     bodyText1: TextStyle(
       fontSize: 16,

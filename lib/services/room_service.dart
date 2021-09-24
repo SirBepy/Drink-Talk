@@ -83,6 +83,11 @@ class RoomService {
     collection.doc(room!.id).update({'hasStarted': true, 'timestamp': Timestamp.now()});
   }
 
+  static Future<void> updateTime(String time) async {
+    if (await roomDoesntExist()) return;
+    collection.doc(room!.id).update({'time': time});
+  }
+
   static Future<void> updateUserTimestamp() async {}
 
   //* Helper Functions

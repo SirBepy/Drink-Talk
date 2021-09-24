@@ -54,6 +54,31 @@ class _SetupScreenState extends State<SetupScreen> {
     );
   }
 
+  Future<void> onTapTime() async {
+    final TimeOfDay? time = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      builder: (context, childWidget) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Theme.of(context).scaffoldBackgroundColor,
+              onSurface: Theme.of(context).primaryColor,
+            ),
+          ),
+          child: MediaQuery(
+            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+            child: childWidget!,
+          ),
+        );
+      },
+    );
+
+    if (time == null) return;
+    final String min = time.minute.toString();
+    RoomService.updateTime('${time.hour}h ${min.length == 1 ? "0${min}" : min}min');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,6 +124,45 @@ class _SetupScreenState extends State<SetupScreen> {
                           child: QrImage(
                             data: snapshot.data!.id,
                           ),
+                        ),
+                        Spacers.h32,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Expanded(flex: 3, child: SizedBox()),
+                            Text(
+                              'Vrijeme igre',
+                              style: Theme.of(context).textTheme.headline2,
+                            ),
+                            const Expanded(flex: 1, child: SizedBox()),
+                            InkWell(
+                              child: Ink(
+                                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).primaryColor,
+                                  borderRadius: BorderRadius.circular(200),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      snapshot.data!.time,
+                                      style: Theme.of(context).textTheme.headline5,
+                                    ),
+                                    Spacers.w8,
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 8, top: 4),
+                                      child: Icon(
+                                        Icons.keyboard_arrow_down_rounded,
+                                        color: Theme.of(context).backgroundColor,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              onTap: onTapTime,
+                            ),
+                            const Expanded(flex: 3, child: SizedBox()),
+                          ],
                         ),
                         const Expanded(child: SizedBox(), flex: 3),
                       ],

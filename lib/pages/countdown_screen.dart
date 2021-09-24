@@ -7,6 +7,7 @@ import 'package:drink_n_talk/pages/done_screen.dart';
 import 'package:drink_n_talk/services/room_service.dart';
 import 'package:drink_n_talk/utils/spacers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screen_wake/flutter_screen_wake.dart';
 
 enum CountdownState { waiting, started, finished }
 
@@ -18,7 +19,7 @@ class CountdownScreen extends StatefulWidget {
   State<CountdownScreen> createState() => _CountdownScreenState();
 }
 
-class _CountdownScreenState extends State<CountdownScreen> {
+class _CountdownScreenState extends State<CountdownScreen> with WidgetsBindingObserver {
   Timer? futureUpdateTimeStamp;
   bool? hadRoom;
   bool matchDone = false;
@@ -26,9 +27,21 @@ class _CountdownScreenState extends State<CountdownScreen> {
   CountdownState countdownState = CountdownState.waiting;
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (!matchDone &&
+        hadRoom == true &&
+        countdownState == CountdownState.finished &&
+        state == AppLifecycleState.paused) {
+      RoomService.setAsLoser();
+    }
+  }
+
+  @override
   void initState() {
     super.initState();
     if (!widget.alreadyJoined) RoomService.joinRoom(onNameIsDuplicate);
+    WidgetsBinding.instance!.addObserver(this);
   }
 
   void onNameIsDuplicate(String newName) {
@@ -52,6 +65,7 @@ class _CountdownScreenState extends State<CountdownScreen> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance!.removeObserver(this);
     futureUpdateTimeStamp?.cancel();
     RoomService.leaveRoom();
     super.dispose();
@@ -94,15 +108,29 @@ class _CountdownScreenState extends State<CountdownScreen> {
     return '${timeLeft.minute}min';
   }
 
-  // I shouldve checked this before, not sure what newGame is meant to do
-  // TODO: Ask what needs to be done
-  void finishGame() {
+  void finishGame([String? loser]) {
     if (matchDone) return;
+    FlutterScreenWake.keepOn(false);
+    FlutterScreenWake.setBrightness(0);
     setState(() => matchDone = true);
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => DoneScreen()),
-    );
+    if (loser == null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const DoneScreen()),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => DoneScreen(loser: loser)),
+      );
+    }
+  }
+
+  void onCountdownDone() {
+    setState(() => countdownState = CountdownState.finished);
+    updateTimeStamp();
+    FlutterScreenWake.keepOn(true);
+    FlutterScreenWake.setBrightness(0);
   }
 
   @override
@@ -117,7 +145,10 @@ class _CountdownScreenState extends State<CountdownScreen> {
           }
           hadRoom ??= true;
           if (snapshot.data!.hasStarted && countdownState == CountdownState.waiting)
-            Future.delayed(const Duration(milliseconds: 500), startTimer);
+            Future.delayed(const Duration(milliseconds: 50), startTimer);
+          print('loser je ${snapshot.data!.loser}');
+          if (snapshot.data!.loser != null && !matchDone)
+            Future.delayed(const Duration(milliseconds: 50), () => finishGame(snapshot.data!.loser));
 
           return Stack(
             children: [
@@ -150,10 +181,7 @@ class _CountdownScreenState extends State<CountdownScreen> {
                       autoStart: false,
                       onComplete: () => Future.delayed(
                         const Duration(seconds: 1),
-                        () {
-                          setState(() => countdownState = CountdownState.finished);
-                          updateTimeStamp();
-                        },
+                        onCountdownDone,
                       ),
                     ),
                     Spacers.h16,

@@ -3,6 +3,7 @@ import 'package:drink_n_talk/components/bottom_button.dart';
 import 'package:drink_n_talk/utils/app_padding.dart';
 import 'package:drink_n_talk/utils/spacers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screen_wake/flutter_screen_wake.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,6 +19,8 @@ class _DoneScreenState extends State<DoneScreen> {
   late ConfettiController _controllerCenter;
   @override
   void initState() {
+    FlutterScreenWake.keepOn(true);
+    FlutterScreenWake.setBrightness(1);
     super.initState();
     _controllerCenter = ConfettiController(duration: const Duration(seconds: 3));
     playConfettiIfUserNotLoser();

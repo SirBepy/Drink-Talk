@@ -78,6 +78,12 @@ class RoomService {
     });
   }
 
+  static Future<void> setAsLoser() async {
+    if (await roomDoesntExist()) return;
+    final sharedPrefs = await SharedPreferences.getInstance();
+    collection.doc(room!.id).update({'loser': sharedPrefs.getString('username')});
+  }
+
   static Future<void> startGame() async {
     if (await roomDoesntExist()) return;
     collection.doc(room!.id).update({'hasStarted': true, 'timestamp': Timestamp.now()});

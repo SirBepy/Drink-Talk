@@ -88,8 +88,6 @@ class RoomService {
     collection.doc(room!.id).update({'time': time});
   }
 
-  static Future<void> updateUserTimestamp() async {}
-
   //* Helper Functions
   static Future<bool> roomDoesntExist() async {
     if (room == null) return true;
@@ -112,10 +110,10 @@ class RoomService {
   //* Functions that should be replaced
   // Ideally, this function will later be deleted and we would use a CRON function to delete older entries
   //? Problem: In case user opens a room but forces the app to shutdown, there will be some rooms left open
-  //* Solution: Delete all data older than 16 hours
+  //* Solution: Delete all data older than 30 hours
   static void deleteOldData() {
     final timestamp16hrAgo = Timestamp.fromMillisecondsSinceEpoch(
-      DateTime.now().subtract(const Duration(hours: 16)).millisecondsSinceEpoch,
+      DateTime.now().subtract(const Duration(hours: 30)).millisecondsSinceEpoch,
     );
 
     collection.where('timestamp', isLessThan: timestamp16hrAgo).get().then((QuerySnapshot snapshot) {

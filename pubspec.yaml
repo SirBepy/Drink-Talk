@@ -5,11 +5,12 @@ publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.14.0 <3.0.0"
 
 dependencies:
   circular_countdown_timer: ^0.2.0
   cloud_firestore: ^2.5.3
+  confetti: ^0.6.0
   cupertino_icons: ^1.0.2
   firebase_core: ^1.6.0
   flutter:
@@ -30,6 +31,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/logo.svg
+    - assets/images/end.svg
 
   fonts:
     - family: Baruta

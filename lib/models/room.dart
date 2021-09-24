@@ -1,14 +1,18 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Room {
   bool hasStarted;
   String time;
   List<String> players;
   String id;
+  Timestamp? timestamp;
 
   Room({
+    this.timestamp,
     this.hasStarted = false,
-    this.time = '0h 30min',
+    this.time = '0h 05min',
     this.players = const [],
     this.id = '',
   });
@@ -17,6 +21,7 @@ class Room {
     return {
       'hasStarted': hasStarted,
       'time': time,
+      'timestamp': timestamp,
       'players': players,
     };
   }
@@ -27,6 +32,7 @@ class Room {
     return Room(
       hasStarted: map['hasStarted'] as bool,
       time: map['time'] as String,
+      timestamp: map['timestamp'] as Timestamp,
       players: players.map((e) => e.toString()).toList(),
     );
   }

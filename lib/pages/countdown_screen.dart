@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
-import 'package:drink_n_talk/components/bottom_button.dart';
-import 'package:drink_n_talk/components/custom_app_bar.dart';
 import 'package:drink_n_talk/components/loading_indicator.dart';
 import 'package:drink_n_talk/models/room.dart';
+import 'package:drink_n_talk/pages/done_screen.dart';
 import 'package:drink_n_talk/services/room_service.dart';
 import 'package:drink_n_talk/utils/spacers.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +19,9 @@ class CountdownScreen extends StatefulWidget {
 }
 
 class _CountdownScreenState extends State<CountdownScreen> {
-  Timer? futureUpdateFirestore;
+  Timer? futureUpdateTimeStamp;
   bool? hadRoom;
+  bool matchDone = false;
   CountDownController countDownController = CountDownController();
   CountdownState countdownState = CountdownState.waiting;
 
@@ -29,7 +29,6 @@ class _CountdownScreenState extends State<CountdownScreen> {
   void initState() {
     super.initState();
     if (!widget.alreadyJoined) RoomService.joinRoom(onNameIsDuplicate);
-    // updateTimeStamp();
   }
 
   void onNameIsDuplicate(String newName) {
@@ -42,19 +41,18 @@ class _CountdownScreenState extends State<CountdownScreen> {
     );
   }
 
-  // The logic is weird but simple
-  //? Problem: Letting the host know who joined, and who left, but also being able to do that even if the user turns off his phone
-  //* Solution: Updating the timestamp for this user every 6 seconds, and the host will delete a user if the timestamp is older than 15 seconds
+  // Not a good practice, but i need to force update the state
   void updateTimeStamp() {
-    futureUpdateFirestore = Timer(const Duration(seconds: 6), () {
-      RoomService.updateUserTimestamp();
-      updateTimeStamp();
+    futureUpdateTimeStamp?.cancel();
+    futureUpdateTimeStamp = Timer(const Duration(seconds: 1), () {
+      setState(() {});
+      if (!matchDone) updateTimeStamp();
     });
   }
 
   @override
   void dispose() {
-    futureUpdateFirestore?.cancel();
+    futureUpdateTimeStamp?.cancel();
     RoomService.leaveRoom();
     super.dispose();
   }
@@ -70,9 +68,42 @@ class _CountdownScreenState extends State<CountdownScreen> {
     countDownController.start();
   }
 
+  String getTime(Room room) {
+    if (countdownState != CountdownState.finished) return room.time;
+
+    final DateTime timeElapsed = DateTime.now().subtract(
+      Duration(milliseconds: room.timestamp!.millisecondsSinceEpoch),
+    );
+
+    final DateTime timeLeft = DateTime(
+      1970,
+      1,
+      1,
+      int.tryParse(room.time.substring(0, room.time.indexOf('h ')))!,
+      int.tryParse(room.time.substring(room.time.indexOf('h ') + 2, room.time.indexOf('min')))!,
+      10,
+    ).subtract(Duration(milliseconds: timeElapsed.millisecondsSinceEpoch));
+
+    if (DateTime(1970).compareTo(timeLeft) > 0) {
+      Future.delayed(const Duration(seconds: 1), finishGame);
+      return '0sek';
+    }
+    if (timeLeft.minute <= 0) return '${timeLeft.second}sek';
+    if (timeLeft.hour > 0) return '${timeLeft.hour}h ${timeLeft.minute}min';
+
+    return '${timeLeft.minute}min';
+  }
+
   // I shouldve checked this before, not sure what newGame is meant to do
   // TODO: Ask what needs to be done
-  void onNewGame() {}
+  void finishGame() {
+    if (matchDone) return;
+    setState(() => matchDone = true);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => DoneScreen()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +150,10 @@ class _CountdownScreenState extends State<CountdownScreen> {
                       autoStart: false,
                       onComplete: () => Future.delayed(
                         const Duration(seconds: 1),
-                        () => setState(() => countdownState = CountdownState.finished),
+                        () {
+                          setState(() => countdownState = CountdownState.finished);
+                          updateTimeStamp();
+                        },
                       ),
                     ),
                     Spacers.h16,
@@ -154,7 +188,7 @@ class _CountdownScreenState extends State<CountdownScreen> {
                             text: 'Ukoliko podigneš mobitel u sljedećih ',
                           ),
                           TextSpan(
-                            text: '1 sat i 30 min',
+                            text: getTime(snapshot.data!),
                             style: Theme.of(context).textTheme.bodyText2,
                           ),
                           const TextSpan(

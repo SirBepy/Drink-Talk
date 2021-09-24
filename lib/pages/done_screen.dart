@@ -3,8 +3,8 @@ import 'package:drink_n_talk/components/bottom_button.dart';
 import 'package:drink_n_talk/utils/app_padding.dart';
 import 'package:drink_n_talk/utils/spacers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screen_wake/flutter_screen_wake.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screen_wake/flutter_screen_wake.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -82,7 +82,8 @@ class _DoneScreenState extends State<DoneScreen> {
                         ),
                         Spacers.h16,
                         Text(
-                          AppLocalizations.of(context)?.greatTeamQuote ??'Vi ste prava ekipa\nkoja može zaboraviti\ntehnologiju na tren.',
+                          AppLocalizations.of(context)?.greatTeamQuote ??
+                              'Vi ste prava ekipa\nkoja može zaboraviti\ntehnologiju na tren.',
                           style: Theme.of(context).textTheme.headline2!,
                           textAlign: TextAlign.center,
                         ),
@@ -90,7 +91,7 @@ class _DoneScreenState extends State<DoneScreen> {
                       ] else ...[
                         Spacers.h16,
                         Text(
-                          'Luuuzeer je...',
+                          AppLocalizations.of(context)?.loserIs ?? 'Luuuzeer je...',
                           style: Theme.of(context)
                               .textTheme
                               .headline1!
@@ -103,7 +104,7 @@ class _DoneScreenState extends State<DoneScreen> {
                         ),
                         Spacers.h16,
                         Text(
-                          'Ne sluša ekipu\ni plaća ovu rundu',
+                          AppLocalizations.of(context)?.doesntListenToGang ?? 'Ne sluša ekipu\ni plaća ovu rundu',
                           style: Theme.of(context)
                               .textTheme
                               .headline2!
@@ -132,7 +133,7 @@ class _DoneScreenState extends State<DoneScreen> {
           Align(
             alignment: Alignment.bottomCenter,
             child: BottomButton(
-              text: AppLocalizations.of(context)?.newGame??'Nova igra?',
+              text: AppLocalizations.of(context)?.newGame ?? 'Nova igra?',
               onPressed: Navigator.of(context).pop,
             ),
           ),

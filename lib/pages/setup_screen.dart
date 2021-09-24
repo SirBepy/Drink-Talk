@@ -43,7 +43,8 @@ class _SetupScreenState extends State<SetupScreen> {
 
   Future<void> handleNoMoreRoom() async {
     hadRoom = false;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)?.roomDoesntExist ?? 'Ova soba više ne postoji')));
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context)?.roomDoesntExist ?? 'Ova soba više ne postoji')));
     Navigator.of(context).pop();
   }
 
@@ -329,7 +330,7 @@ class _CustomBottomModalSheetState extends State<_CustomBottomModalSheet> {
               child: BottomButton(
                 onPressed: widget.onStart,
                 isDark: true,
-                text: 'Kreni s igrom',
+                text: AppLocalizations.of(context)?.startAMatch ?? 'Kreni s igrom',
               ),
             ),
           ),

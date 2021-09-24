@@ -58,11 +58,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> handleQRCodeResponse(dynamic response) async {
     if (response is! String || response.isEmpty) {
-      return showErrorToast('QR Kod je neispravan');
+      return showErrorToast(AppLocalizations.of(context)?.qrCodeInvalid ?? 'QR Kod je neispravan');
     }
     final Room? room = await RoomService.getRoom(response);
     if (room == null) {
-      return showErrorToast('Ova Drink&Talk soba ne postoji');
+      return showErrorToast(AppLocalizations.of(context)?.roomDoesntExist ?? 'Ova soba ne postoji');
     }
 
     Navigator.of(context).push(
@@ -102,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Spacers.h64,
                 AppButton(
-                  text:  AppLocalizations.of(context)?.createGame ?? 'Kreiraj Igru',
+                  text: AppLocalizations.of(context)?.createGame ?? 'Kreiraj Igru',
                   size: 180,
                   onPressed: onCreate,
                 ),

@@ -74,7 +74,11 @@ class _CountdownScreenState extends State<CountdownScreen> with WidgetsBindingOb
 
   Future<void> handleNoMoreRoom() async {
     hadRoom = false;
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Ova soba više ne postoji')));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(AppLocalizations.of(context)?.roomDoesntExist ?? 'Ova soba više ne postoji'),
+      ),
+    );
     Navigator.of(context).pop();
   }
 
@@ -101,9 +105,9 @@ class _CountdownScreenState extends State<CountdownScreen> with WidgetsBindingOb
 
     if (DateTime(1970).compareTo(timeLeft) > 0) {
       Future.delayed(const Duration(seconds: 1), finishGame);
-      return '0sek';
+      return '0s';
     }
-    if (timeLeft.minute <= 0) return '${timeLeft.second}sek';
+    if (timeLeft.minute <= 0) return '${timeLeft.second}s';
     if (timeLeft.hour > 0) return '${timeLeft.hour}h ${timeLeft.minute}min';
 
     return '${timeLeft.minute}min';
@@ -210,18 +214,21 @@ class _CountdownScreenState extends State<CountdownScreen> with WidgetsBindingOb
                         children: [
                           if (countdownState == CountdownState.waiting)
                             TextSpan(
-                              text: AppLocalizations.of(context)?.waitingForHost ?? 'Čekamo host-a da započne igru.\n\n',
+                              text:
+                                  AppLocalizations.of(context)?.waitingForHost ?? 'Čekamo host-a da započne igru.\n\n',
                               style: Theme.of(context).textTheme.bodyText2,
                             ),
-                           TextSpan(
-                            text: AppLocalizations.of(context)?.instructionsFirst ??'Ukoliko podigneš mobitel u sljedećih ',
+                          TextSpan(
+                            text: AppLocalizations.of(context)?.instructionsFirst ??
+                                'Ukoliko podigneš mobitel u sljedećih ',
                           ),
                           TextSpan(
                             text: getTime(snapshot.data!),
                             style: Theme.of(context).textTheme.bodyText2,
                           ),
-                           TextSpan(
-                            text: AppLocalizations.of(context)?.instructionsSecond ?? ' ostalim sudionicima igre doći će notifikacija da si izgubio.\n\n',
+                          TextSpan(
+                            text: AppLocalizations.of(context)?.instructionsSecond ??
+                                ' ostalim sudionicima igre doći će notifikacija da si izgubio.\n\n',
                           ),
                           TextSpan(
                             text: AppLocalizations.of(context)?.beFair ?? 'Budi fer i plati piće ako gubiš.',

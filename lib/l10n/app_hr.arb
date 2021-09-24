@@ -1,14 +1,13 @@
 {
-    "@@locale": "hr",
-
-    "hello" : "Hellou",
-    "createGame": "Kreiraj Igru",
-    "joinExistingGame": "Prijavi se u postojeću igru",
-    "nameExists": "Ovo ime već postoji u ovoj sobi, novo ime je: ",
-    "leavePhone": "Spusti i ne diraj\nmobitel za",
-    "seconds": "Sekundi",
-    "waitingForHost": "Čekamo host-a da započne igru.\n\n",
-    "instructionsFirst": "Ukoliko podigneš mobitel u sljedećih ",
+  "@@locale": "hr",
+  "hello": "Hellou",
+  "createGame": "Kreiraj Igru",
+  "joinExistingGame": "Prijavi se u postojeću igru",
+  "nameExists": "Ovo ime već postoji u ovoj sobi, novo ime je: ",
+  "leavePhone": "Spusti i ne diraj\nmobitel za",
+  "seconds": "Sekundi",
+  "waitingForHost": "Čekamo host-a da započne igru.\n\n",
+  "instructionsFirst": "Ukoliko podigneš mobitel u sljedećih ",
   "instructionsSecond": " ostalim sudionicima igre doći će notifikacija da si izgubio.\n\n",
   "beFair": "Budi fer i plati piće ako gubiš.",
   "greatTeamQuote": "Vi ste prava ekipa\nkoja može zaboraviti\ntehnologiju na tren.",
@@ -16,7 +15,9 @@
   "provideUsername": "Daj nadimak ili ime",
   "signUp": "Prijavi se",
   "nicknameEmpty": "Nadimak nesmije bit prazan",
-  "roomDoesntExist": "Ova soba više ne postoji"
-  
-  }
-  
+  "roomDoesntExist": "Ova soba više ne postoji",
+  "startAMatch": "Kreni s igrom",
+  "qrCodeInvalid": "QR Kod je neispravan",
+  "loserIs": "Luuuzeer je...",
+  "doesntListenToGang": "Ne sluša ekipu\ni plaća ovu rundu"
+}

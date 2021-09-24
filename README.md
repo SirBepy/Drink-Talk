@@ -65,7 +65,7 @@ and testing purposes.
 
 In order for you to run this program, you will need Flutter and Dart SDK installed.
 
-If you want to run the app on iOS, this is a necessity. If, however, you wish to run it on Android, and you do not wish to install Flutter, feel free to simply use the .apk file provided in this folder
+If you want to run the app on iOS, this is a necessity. If, however, you wish to run it on Android, and you do not wish to install Flutter, feel free to simply use the app-release.apk file provided in this folder
 
 ### Recommendations
 

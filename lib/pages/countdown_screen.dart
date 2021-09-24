@@ -12,7 +12,8 @@ import 'package:flutter/material.dart';
 enum CountdownState { waiting, started, finished }
 
 class CountdownScreen extends StatefulWidget {
-  const CountdownScreen({Key? key}) : super(key: key);
+  final bool alreadyJoined;
+  const CountdownScreen({Key? key, this.alreadyJoined = false}) : super(key: key);
 
   @override
   State<CountdownScreen> createState() => _CountdownScreenState();
@@ -27,8 +28,18 @@ class _CountdownScreenState extends State<CountdownScreen> {
   @override
   void initState() {
     super.initState();
-    RoomService.joinRoom();
+    if (!widget.alreadyJoined) RoomService.joinRoom(onNameIsDuplicate);
     // updateTimeStamp();
+  }
+
+  void onNameIsDuplicate(String newName) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Ovo ime već postoji u ovoj sobi, novo ime je: $newName',
+        ),
+      ),
+    );
   }
 
   // The logic is weird but simple

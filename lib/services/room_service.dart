@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drink_n_talk/models/room.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RoomService {
@@ -54,14 +55,32 @@ class RoomService {
     collection.doc(room!.id).update({
       'players': FieldValue.arrayRemove([sharedPrefs.getString('username')!])
     });
+    final DocumentSnapshot snapshot = await collection.doc(room!.id).get();
+    final Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+    if ((data['players'] as List<dynamic>).isEmpty) {
+      deleteRoom();
+    }
   }
 
-  static Future<void> joinRoom() async {
+  static Future<void> joinRoom(ValueSetter<String> onNameIsDuplicate) async {
     if (await roomDoesntExist()) return;
     final sharedPrefs = await SharedPreferences.getInstance();
+    String username = sharedPrefs.getString('username')!;
+    final int? firstAvailableNameIndex = getFirstAvailableIndex(username);
+    if (firstAvailableNameIndex != null) {
+      username += ' $firstAvailableNameIndex';
+      sharedPrefs.setString('username', username);
+      onNameIsDuplicate(username);
+    }
+
     collection.doc(room!.id).update({
-      'players': FieldValue.arrayUnion([sharedPrefs.getString('username')!])
+      'players': FieldValue.arrayUnion([username])
     });
+  }
+
+  static Future<void> startGame() async {
+    if (await roomDoesntExist()) return;
+    collection.doc(room!.id).update({'hasStarted': true, 'timestamp': Timestamp.now()});
   }
 
   static Future<void> updateUserTimestamp() async {}
@@ -73,6 +92,16 @@ class RoomService {
     if (!exists) room = null;
 
     return !exists;
+  }
+
+  // This function combats people having same usernames
+  static int? getFirstAvailableIndex(String username) {
+    int toReturn = 0;
+    for (var i = 0; i < room!.players.length; i++) {
+      if (room!.players[i].substring(0, username.length).toLowerCase() == username.toLowerCase()) toReturn++;
+    }
+    if (toReturn == 0) return null;
+    return toReturn;
   }
 
   //* Functions that should be replaced

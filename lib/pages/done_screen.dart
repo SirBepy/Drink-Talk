@@ -3,7 +3,9 @@ import 'package:drink_n_talk/components/bottom_button.dart';
 import 'package:drink_n_talk/utils/app_padding.dart';
 import 'package:drink_n_talk/utils/spacers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screen_wake/flutter_screen_wake.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DoneScreen extends StatefulWidget {
   final String? loser;
@@ -17,9 +19,16 @@ class _DoneScreenState extends State<DoneScreen> {
   late ConfettiController _controllerCenter;
   @override
   void initState() {
+    FlutterScreenWake.keepOn(true);
+    FlutterScreenWake.setBrightness(1);
     super.initState();
     _controllerCenter = ConfettiController(duration: const Duration(seconds: 3));
-    _controllerCenter.play();
+    playConfettiIfUserNotLoser();
+  }
+
+  Future<void> playConfettiIfUserNotLoser() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    if (widget.loser != sharedPrefs.getString('username')) _controllerCenter.play();
   }
 
   @override
@@ -93,11 +102,12 @@ class _DoneScreenState extends State<DoneScreen> {
                         ),
                         Spacers.h16,
                         Text(
-                          'Ne sluša ekipu i plaća ovu rundu',
+                          'Ne sluša ekipu\ni plaća ovu rundu',
                           style: Theme.of(context)
                               .textTheme
                               .headline2!
                               .copyWith(color: Theme.of(context).scaffoldBackgroundColor),
+                          textAlign: TextAlign.center,
                         ),
                       ],
                       Spacers.h64,

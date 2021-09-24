@@ -5,22 +5,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Room {
   bool hasStarted;
   String time;
-  List<String> players;
   String id;
+  String? loser;
+  List<String> players;
   Timestamp? timestamp;
 
   Room({
-    this.timestamp,
     this.hasStarted = false,
     this.time = '0h 05min',
-    this.players = const [],
     this.id = '',
+    this.loser,
+    this.players = const [],
+    this.timestamp,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'hasStarted': hasStarted,
       'time': time,
+      'loser': loser,
       'timestamp': timestamp,
       'players': players,
     };
@@ -32,6 +35,7 @@ class Room {
     return Room(
       hasStarted: map['hasStarted'] as bool,
       time: map['time'] as String,
+      loser: map['loser'] as String?,
       timestamp: map['timestamp'] as Timestamp,
       players: players.map((e) => e.toString()).toList(),
     );

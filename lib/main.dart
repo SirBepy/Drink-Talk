@@ -3,12 +3,15 @@ import 'package:drink_n_talk/services/room_service.dart';
 import 'package:drink_n_talk/utils/app_padding.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screen_wake/flutter_screen_wake.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
   RoomService.init();
+  FlutterScreenWake.keepOn(true);
+  FlutterScreenWake.setBrightness(.6);
 }
 
 class MyApp extends StatelessWidget {

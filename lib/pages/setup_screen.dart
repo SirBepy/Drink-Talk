@@ -97,6 +97,7 @@ class _SetupScreenState extends State<SetupScreen> {
                 return const LoadingIndicator();
               }
               hadRoom ??= true;
+              final bool disableControls = snapshot.data!.players.length > 1;
 
               return _CustomBottomModalSheet(
                 players: snapshot.data!.players,
@@ -135,34 +136,44 @@ class _SetupScreenState extends State<SetupScreen> {
                             const Expanded(flex: 3, child: SizedBox()),
                             Text(
                               'Vrijeme igre',
-                              style: Theme.of(context).textTheme.headline2,
+                              style: Theme.of(context).textTheme.headline2!.copyWith(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .headline2!
+                                      .color!
+                                      .withOpacity(disableControls ? 0.2 : 1)),
                             ),
                             const Expanded(flex: 1, child: SizedBox()),
                             InkWell(
                               child: Ink(
                                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                                 decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
+                                  color: Theme.of(context).primaryColor.withOpacity(disableControls ? 0.2 : 1),
                                   borderRadius: BorderRadius.circular(200),
                                 ),
                                 child: Row(
                                   children: [
                                     Text(
                                       snapshot.data!.time,
-                                      style: Theme.of(context).textTheme.headline5,
+                                      style: Theme.of(context).textTheme.headline5!.copyWith(
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .headline5!
+                                              .color!
+                                              .withOpacity(disableControls ? 0.4 : 1)),
                                     ),
                                     Spacers.w8,
                                     Padding(
                                       padding: const EdgeInsets.only(left: 8, top: 4),
                                       child: Icon(
                                         Icons.keyboard_arrow_down_rounded,
-                                        color: Theme.of(context).backgroundColor,
+                                        color: Theme.of(context).backgroundColor.withOpacity(disableControls ? 0.4 : 1),
                                       ),
                                     )
                                   ],
                                 ),
                               ),
-                              onTap: onTapTime,
+                              onTap: disableControls ? null : onTapTime,
                             ),
                             const Expanded(flex: 3, child: SizedBox()),
                           ],

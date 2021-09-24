@@ -57,7 +57,10 @@ class _SetupScreenState extends State<SetupScreen> {
   Future<void> onTapTime() async {
     final TimeOfDay? time = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay.now(),
+      // 300000 = 5 min, we also need to subtract 1 hour because by default an hour is added
+      initialTime: TimeOfDay.fromDateTime(
+        DateTime.fromMillisecondsSinceEpoch(300000).subtract(const Duration(hours: 1)),
+      ),
       builder: (context, childWidget) {
         return Theme(
           data: ThemeData.light().copyWith(
@@ -76,7 +79,7 @@ class _SetupScreenState extends State<SetupScreen> {
 
     if (time == null) return;
     final String min = time.minute.toString();
-    RoomService.updateTime('${time.hour}h ${min.length == 1 ? "0${min}" : min}min');
+    RoomService.updateTime('${time.hour}h ${min.length == 1 ? "0$min" : min}min');
   }
 
   @override
